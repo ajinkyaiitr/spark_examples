@@ -1,0 +1,52 @@
+------spark-shell Runs spark scala interactive commandline
+------pyspark Runs python spark interactive commandline
+------sparkR Runs R on spark (/usr/spark2.6/bin/sparkR)
+------spark-submit Submit a jar or python application for execution on cluster
+------spark-sql Runs the spark sql interactive shell
+
+To run example:
+spark-submit --class org.apache.spark.examples.SparkPi
+/usr/hdp/current/spark-client/lib/spark-examples-*.jar 10
+
+To launch Spark on Hadoop,
+Set the Environment Variables pointing to Hadoop.
+export YARN_CONF_DIR=/etc/hadoop/conf/
+export HADOOP_CONF_DIR=/etc/hadoop/conf/
+
+----Creating RDD in scala
+Method 1:(By Direct Loading)
+var lines = sc.textFile("/data/mr/wordcount/input/big.txt")
+Method 2:(By distributing existing object)
+val  arr = 1 to 10000
+var nums = sc.parallelize(arr)
+
+----------Word count in scala
+var linesRdd = sc.textFile("/data/mr/wordcount/input/big.txt")
+var words = linesRdd.flatMap(x => x.split(" "))
+var wordsKv = words.map(x => (x, 1))
+var output = wordsKv.reduceByKey(_ + _)
+output.take(10)
+or
+output.saveAsTextFile("my_result")
+
+------Map Transformation
+➢ val arr = 1 to 10000
+➢ val nums = sc.parallelize(arr)
+➢ def multiplyByTwo(x:Int):Int = x*2
+➢ multiplyByTwo(5)
+var dbls = nums.map(multiplyByTwo);
+➢ dbls.take(5)
+[2, 4, 6, 8, 10]
+
+-----Boolean Example
+-----Tranformation filter Scala
+var arr = 1 to 1000
+➢ var nums = sc.parallelize(arr)
+➢ def isEven(x:Int):Boolean = x%2 == 0
+➢ var evens =
+nums.filter(isEven)
+➢ evens.take(3)
+
+
+
+
