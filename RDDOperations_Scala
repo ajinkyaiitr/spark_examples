@@ -1,0 +1,37 @@
+------sample
+sample(withReplacement,fraction,[seed])
+$val seq = sc.parallelize(1 to 100, 5)
+$seq.sample(false, 0.1).collect();
+$seq.sample(true, 0.1).collect();
+
+
+####Program to illustrate RDD
+val seq = sc.parallelize(1 to 100,5)
+seq.sample(true,0.1)
+seq.sample(true,0.1).collect()
+
+A Scala function declaration has the following form −
+
+def functionName ([list of parameters]) : [return type]
+Methods are implicitly declared abstract if you don’t use the equals sign and the method body.
+
+Function Definitions
+A Scala function definition has the following form −
+
+Syntax
+def functionName ([list of parameters]) : [return type] = {
+   function body
+   return [expr]
+
+
+
+###Defining a function in RDD 
+def f(l:Iterator[Int]):Iterator[Int] = {
+ var sum = 0
+ while(l.hasNext){
+ sum = sum + l.next
+ }
+ return List(sum).iterator
+}
+
+seq.mapPartitions(f).collect()
