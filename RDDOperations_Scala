@@ -34,6 +34,8 @@ def f(l:Iterator[Int]):Iterator[Int] = {
  return List(sum).iterator
 }
 
+
+
 seq.mapPartitions(f).collect()
 ------- Returns a new RDD by applying a function to each partition of this RDD
 
@@ -103,6 +105,27 @@ The sum of the parition is 55
 The sum of the parition is 355
 The sum of the parition is 255
 
+======Program for word count=======
+val lines = sc.textFile("/data/mr/wordcount/big.txt")
+val words = lines.flatMap(x => x.split(" "))
+val pairs = words.map(s => (s.toLowerCase(), 1))
+val counts = pairs.reduceByKey((a, b) => a + b)
+counts.take(10)
+//counts.saveAsTextFile("word-count-spark");
+
+=====Program for calculating maximum temperature======
+var txtRDD = sc.textFile("/data/spark/temps.csv")
+
+def cleanRecord(line:String) = {
+    var arr = line.split(",");
+    (arr(1).trim, arr(0).toInt)
+}
+var recordsRDD = txtRDD.map(cleanRecord)
+
+def max(a:Int, b:Int) = if (b > a) b else a
+
+var result = recordsRDD.reduceByKey(max)
+result.collect()
 
 
 
